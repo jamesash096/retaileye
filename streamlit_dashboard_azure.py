@@ -13,9 +13,11 @@ client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def generate_openai_explanation(product_row):
     prompt = (
-        f"Explain in one sentence why this product — {product_row['itemname']} — is labeled as '{product_row['recommendation']}'. "
-        f"It is priced at {product_row['UnitPrice']:.2f} with a rating of {product_row['Rating']}, "
-        f"and similar products cost about {product_row['Best_UnitPrice']:.2f}."
+        f"The product '{product_row['itemname']}' is currently priced at ${product_row['UnitPrice']:.2f} "
+        f"and has a rating of {product_row['Rating']}. "
+        f"It has been flagged as '{product_row['recommendation']}'. "
+        f"Competitor '{product_row['Best_Store']}' offers a similar product at ${product_row['Best_UnitPrice']:.2f}. "
+        f"In one concise sentence, explain why this product should be {product_row['recommendation'].lower()} based on this context."
     )
 
     response = client.chat.completions.create(
@@ -28,7 +30,6 @@ def generate_openai_explanation(product_row):
     )
 
     return response.choices[0].message.content
-
 # Load CSV from Azure Blob
 @st.cache_data
 def load_data():
