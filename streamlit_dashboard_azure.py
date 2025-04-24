@@ -4,7 +4,7 @@ from azure.storage.blob import BlobServiceClient
 import io
 import os
 
-st.set_page_config(page_title="RetailEye Dashboard", layout="wide")
+st.set_page_config(page_title="RetailEye", layout="wide")
 DATA_BLOB_CONTAINER = "predictions"
 DATA_BLOB_FILE = "dashboard_ready.csv"
 
