@@ -28,7 +28,6 @@ df = load_data()
 if df.empty:
     st.stop()
 
-st.set_page_config(page_title="RetailEye Dashboard", layout="wide")
 st.title("🛍️ RetailEye: Pricing Recommendation Dashboard")
 st.markdown("Explore model-driven pricing suggestions across stores and categories.")
 
