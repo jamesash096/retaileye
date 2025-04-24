@@ -4,12 +4,18 @@ from azure.storage.blob import BlobServiceClient
 import io
 import os
 import openai
+import re
 
 st.set_page_config(page_title="RetailEye", layout="wide")
 DATA_BLOB_CONTAINER = "predictions"
 DATA_BLOB_FILE = "dashboard_ready.csv"
 
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+def sanitize_markdown(text):
+    # Escape common markdown characters
+    text = re.sub(r'([*_`])', r'\\\1', text)
+    return text
 
 def generate_openai_explanation(product_row):
     prompt = (
@@ -103,4 +109,5 @@ selected_row = filtered[filtered["itemname"] == selected_item].iloc[0]
 # Generate explanation on button click
 if st.button("🧠 Explain Recommendation"):
     explanation = generate_openai_explanation(selected_row)
-    st.markdown(f"**RetailEye's Explanation:** {explanation}")
+    clean_explanation = sanitize_markdown(explanation)
+    st.markdown(f"**RetailEye's Explanation:** {clean_explanation}")
