@@ -9,17 +9,20 @@ st.set_page_config(page_title="RetailEye", layout="wide")
 DATA_BLOB_CONTAINER = "predictions"
 DATA_BLOB_FILE = "dashboard_ready.csv"
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def generate_openai_explanation(product_row):
     prompt = (
         f"Explain in one sentence why this product — {product_row['itemname']} — is labeled as '{product_row['recommendation']}'. "
-        f"It is priced at {product_row['UnitPrice']:.2f} with a rating of {product_row['Rating']}, and similar products cost about {product_row['Best_UnitPrice']:.2f}."
+        f"It is priced at {product_row['UnitPrice']:.2f} with a rating of {product_row['Rating']}, "
+        f"and similar products cost about {product_row['Best_UnitPrice']:.2f}."
     )
 
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # or "gpt-4" if you have access
-        messages=[{"role": "user", "content": prompt}],
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",  # or gpt-4
+        messages=[
+            {"role": "user", "content": prompt}
+        ],
         temperature=0.5,
         max_tokens=100
     )
