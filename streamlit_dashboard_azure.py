@@ -25,7 +25,7 @@ def load_data():
         return pd.DataFrame()
 
 df = load_data()
-if df.empty():
+if df.empty:
     st.stop()
 
 st.set_page_config(page_title="RetailEye Dashboard", layout="wide")
